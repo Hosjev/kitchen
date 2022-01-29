@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+
+{% block header %}
+  <h1>{% block title %}header{% endblock %}</h1>
+{% endblock %}
+
+{% block content %}
+    <section class="post container container-fluid">
+      <header>
+        <div>
+          <h1>boozy</h1>
+        </div>
+      </header>
+
+      <div class="body" style="font-size: .9rem">
+        <form method="post">
+        
+        <!-- row 1 -->
+        <div class="row">
+          <div class="col-lg-6">
+	        {% for item in booze %}
+		  <div class="form-check">
+                      <input type="radio" class="form-check-input" name="booze" value="{{ item['name'] }}">
+                      <label class="form-check-label" for="{{ item['id'] }}">{{ item['name'] }}</label>
+                  </div>
+	        {% endfor %}
+	  </div>
+          <div class="col-lg-6">
+	        {% for item in boozeless %}
+		  <div class="form-check">
+                      <input type="radio" class="form-check-input" name="boozeless" value="{{ item['name'] }}">
+                      <label class="form-check-label" for="{{ item['id'] }}">{{ item['name'] }}</label>
+                  </div>
+	        {% endfor %}
+	  </div>
+	</div>
+
+        <hr>
+        <!-- row 2 -->
+	<div class="row">
+	  <div class="col">
+	        {% for item in ingreds %}
+		  <div class="form-check">
+		      <input type="checkbox" class="form-check-input" name="ingred{{ item['id'] }}" value="{{ item['name'] }}">
+                      <label class="form-check-label" for="{{ item['id'] }}">{{ item['name'] }}</label>
+                  </div>
+	        {% endfor %}
+          </div>
+	  <div class="row">
+	      <input type="submit" class="btn btn-primary" value="Hit Me">
+	  </div>
+	</div>
+
+        </form>
+      </div>
+
+    </section>
+    <hr>
+{% endblock %}
