@@ -1,6 +1,4 @@
 import os
-import sys
-sys.path.append("/home/hosjev/.local/lib/python3.6/site-packages")
 
 from flask import Flask
 
@@ -37,8 +35,9 @@ def create_app(test_config=None):
     app.register_blueprint(home.bp)
     app.add_url_rule('/', endpoint='index')
 
-    # Add blueprint or route for API
+    # Add blueprint / route for API
     #   and add limiter
     # @app.route('/api/v1/drinks')
+    # @limiter.limit("60 per hour")
 
     return app
