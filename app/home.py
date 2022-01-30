@@ -10,9 +10,9 @@ bp = Blueprint('home', __name__)
 
 # Global URLs
 # by ingredient
-URL_IG = "https://www.thecocktaildb.com/api/json/v2/9973533/filter.php?i="
+URL_IG = "https://www.thecocktaildb.com/api/json/v2/KEY/filter.php?i="
 # by ID
-URL_ID = "https://www.thecocktaildb.com/api/json/v2/9973533/lookup.php?i="
+URL_ID = "https://www.thecocktaildb.com/api/json/v2/KEY/lookup.php?i="
 
 
 
@@ -50,12 +50,11 @@ def index():
         all_ingredients = [to_taste] + ingredients
 
         if not all_ingredients:
-            error = 'Error'
+            error = f'Error: {all_ingredients}'
 
         if error is not None:
             flash(error)
         else:
-            current_app.logger.info(all_ingredients)
             return drinks(all_ingredients)
 
     return render_template('home/index.html',
@@ -73,7 +72,7 @@ def api_drinks(ingredients):
 @bp.route('/drinks')
 def drinks(ingredients):
     response = None
-    url = URL_IG + ",".join(ingredients)
+    url = URL_IG.replace('KEY', current_app.config['API_KEY']) + ",".join(ingredients)
     wb = ExternalApi.WebResource()
     try:
         response = wb.get_url(url)
@@ -85,15 +84,15 @@ def drinks(ingredients):
     current_app.logger.info(f"Url: {url}:{response.status_code}")
 
     if response.json()['drinks'] == 'None Found':
-        flash("No drinks found based on ingredients.")
+        flash(f"No drinks found based on ingredients: {', '.join(ingredients)}")
         return redirect(url_for('index'))
     else:
         avail_drinks = list()
-        array_ids = [ item['idDrink'] for item in response.json()['drinks']]
-        array_ids = array_ids[:8]
+        array_ids = [ item['idDrink'] for item in response.json()['drinks']][:8]
+        url_id = URL_ID.replace('KEY', current_app.config['API_KEY'])
         for d_id in array_ids:
             try:
-                url = URL_ID + d_id
+                url = url_id + d_id
                 response = wb.get_url(url)
             except Exception as e:
                 current_app.logger.error(e)
