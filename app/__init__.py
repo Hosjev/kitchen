@@ -2,12 +2,8 @@ import os
 import sys
 sys.path.append("/home/hosjev/.local/lib/python3.6/site-packages")
 
-from flask import Flask, jsonify
+from flask import Flask
 
-from .cocktails import ExternalApi
-
-
-URL = "http://www.thecocktaildb.com/api/json/v1/1/list.php?i=list"
 
 
 def create_app(test_config=None):
@@ -30,21 +26,6 @@ def create_app(test_config=None):
         os.makedirs(app.instance_path)
     except OSError:
         pass
-
-    # our main ingress
-    @app.route("/drinks")
-    def get_drinks():
-        try:
-            wb = ExternalApi.WebResource(URL)
-            wb.get_url()
-            data = wb.json_data()
-        except:
-            return "Nothing found."
-        return jsonify(data)
-
-    # Placeholder for future development (private DB)
-    #from . import auth
-    #app.register_blueprint(auth.db)
 
     # Initialize command for DB population
     from . import db

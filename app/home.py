@@ -10,9 +10,9 @@ bp = Blueprint('home', __name__)
 
 # Global URLs
 # by ingredient
-URL_IG = "http://www.thecocktaildb.com/api/json/v1/1/filter.php?i="
+URL_IG = "https://www.thecocktaildb.com/api/json/v2/9973533/filter.php?i="
 # by ID
-URL_ID = "http://www.thecocktaildb.com/api/json/v1/1/lookup.php?i="
+URL_ID = "https://www.thecocktaildb.com/api/json/v2/9973533/lookup.php?i="
 
 
 
@@ -44,7 +44,7 @@ def index():
         error = None
 
         #if alcohol and non_alcohol:
-            #flash('Please be boozy ... or not.')
+            #flash('Please be boozy ... or eazy-classy.')
         #to_taste = alcohol if alcohol else non_alcohol
         to_taste = alcohol
         all_ingredients = [to_taste] + ingredients
@@ -56,8 +56,6 @@ def index():
             flash(error)
         else:
             current_app.logger.info(all_ingredients)
-            #drinks(all_ingredients)
-            #return redirect(url_for('home.drinks', all_ingredients))
             return drinks(all_ingredients)
 
     return render_template('home/index.html',
@@ -66,7 +64,7 @@ def index():
             ingreds=ingreds)
 
 
-@bp.route('/api/json/v1')
+@bp.route('/api/v1')
 def api_drinks(ingredients):
     # Stub for API
     return
@@ -74,22 +72,21 @@ def api_drinks(ingredients):
 
 @bp.route('/drinks')
 def drinks(ingredients):
-    # 1 - get drink ids by ingred
-    # 2 - get drinks by id (limit = 10) (randomize)
     response = None
-    url = URL_IG + ingredients[0]
-    current_app.logger.info(f"Url: {url}")
+    url = URL_IG + ",".join(ingredients)
     wb = ExternalApi.WebResource()
     try:
         response = wb.get_url(url)
     except Exception as e:
         current_app.logger.error(e)
-        # do something, redirect etc.
+        flash(e)
+        return redirect(url_for('index'))
 
     current_app.logger.info(f"Url: {url}:{response.status_code}")
 
-    if not response:
+    if response.json()['drinks'] == 'None Found':
         flash("No drinks found based on ingredients.")
+        return redirect(url_for('index'))
     else:
         avail_drinks = list()
         array_ids = [ item['idDrink'] for item in response.json()['drinks']]
