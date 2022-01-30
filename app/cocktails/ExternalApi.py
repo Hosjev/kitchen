@@ -4,14 +4,14 @@ import json
 
 
 class WebResource:
-    def __init__(self, url):
-        self.url = url
 
-    def get_url(self):
-        self.resp = requests.get(self.url)
+    def get_url(self, url):
+        resp = requests.get(url)
+        resp.raise_for_status()
+        return resp
 
-    def json_data(self):
-        return self.resp.json()
+    def json_data(self, resp):
+        return resp.json()
 
-    def resp_code(self):
-        return self.resp.status_code
+    def resp_code(self, resp):
+        return resp.status_code

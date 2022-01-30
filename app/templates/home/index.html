@@ -1,23 +1,24 @@
 {% extends 'base.html' %}
 
 {% block header %}
-  <h1>{% block title %}header{% endblock %}</h1>
+  <div class="text-center container">
+    <p>(got rando stuff in the kitchen?)</p>
+    <h4 class="mx-2 my-2">{% block title %}Cobble a cocktail{% endblock %}</h4>
+  </div>
 {% endblock %}
 
 {% block content %}
-    <section class="post container container-fluid">
-      <header>
-        <div>
-          <h1>boozy</h1>
-        </div>
-      </header>
+    <section class="post container container-fluid" style="color: #49515a">
 
-      <div class="body" style="font-size: .9rem">
+      <div class="body">
         <form method="post">
         
         <!-- row 1 -->
         <div class="row">
           <div class="col-lg-6">
+            <div class="my-2 col-heads">
+              Boozy
+	    </div>
 	        {% for item in booze %}
 		  <div class="form-check">
                       <input type="radio" class="form-check-input" name="booze" value="{{ item['name'] }}">
@@ -26,6 +27,9 @@
 	        {% endfor %}
 	  </div>
           <div class="col-lg-6">
+            <div class="my-2 col-heads">
+              Non-boozy
+	    </div>
 	        {% for item in boozeless %}
 		  <div class="form-check">
                       <input type="radio" class="form-check-input" name="boozeless" value="{{ item['name'] }}">
@@ -40,12 +44,12 @@
 	<div class="row">
 	  <div class="col">
 	        {% for item in ingreds %}
-		  <div class="form-check">
+		  <div class="form-check form-check-inline">
 		      <input type="checkbox" class="form-check-input" name="ingred{{ item['id'] }}" value="{{ item['name'] }}">
                       <label class="form-check-label" for="{{ item['id'] }}">{{ item['name'] }}</label>
                   </div>
 	        {% endfor %}
-          </div>
+	    </div>
 	  <div class="row">
 	      <input type="submit" class="btn btn-primary" value="Hit Me">
 	  </div>
@@ -55,5 +59,4 @@
       </div>
 
     </section>
-    <hr>
 {% endblock %}
