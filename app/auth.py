@@ -1,5 +1,4 @@
-"""
-    Future functionality for authenticating users.
+"""Future functionality for authenticating users.
     :Update sqlite before using.
     :Consider ONLY SSO for auth
 """

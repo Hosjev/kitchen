@@ -15,17 +15,13 @@ def init_db():
 @click.command('init-db')
 @with_appcontext
 def init_db_command():
-    """
-        Create init command.
-        Initialize DB.
-        Clear the existing data.
-        Create new tables.
-    """
+    """Create CLI command to initialize the database."""
     init_db()
     click.echo('Initialized the database.')
 
 
 def get_db():
+    """Store database connection object in 'g' if not present."""
     if 'db' not in g:
         g.db = sqlite3.connect(
             current_app.config['DATABASE'],

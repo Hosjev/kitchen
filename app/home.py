@@ -1,10 +1,9 @@
 from flask import (
-    Blueprint, current_app, flash, g, redirect, render_template, request, url_for
+    Blueprint, current_app, flash, redirect, render_template, request, url_for
 )
-from werkzeug.exceptions import abort
 
 from app.db import get_db
-from .cocktails import ExternalApi
+from .cocktails import extsync
 
 bp = Blueprint('home', __name__)
 
@@ -18,7 +17,12 @@ URL_ID = "https://www.thecocktaildb.com/api/json/v2/KEY/lookup.php?i="
 
 @bp.route('/', methods=('GET', 'POST'))
 def index():
-    # Retrieve ingredients from local DB
+    """This main page view retrieves 3 dicts from the instance sqlite
+    database then draws them onto the page. The selection
+    options require only an alcohol type to be chosen. Future
+    releases will take a strict alcohol or non-alcohol type. 
+    Ingredients are optional.
+    """
     db = get_db()
     booze = db.execute(
         'SELECT b.id, b.name'
@@ -43,9 +47,10 @@ def index():
                 ingredients.append(v)
         error = None
 
-        #if alcohol and non_alcohol:
-            #flash('Please be boozy ... or eazy-classy.')
-        #to_taste = alcohol if alcohol else non_alcohol
+        # if alcohol and non_alcohol:
+            # flash('Please be boozy ... or eazy-classy.')
+            # return redirect(url_for('index'))
+        # to_taste = alcohol if alcohol else non_alcohol
         to_taste = alcohol
         all_ingredients = [to_taste] + ingredients
 
@@ -65,7 +70,7 @@ def index():
 
 @bp.route('/api/v1')
 def api_drinks(ingredients):
-    # Stub for API
+    # Stub for API (sanitize results)
     return
 
 
@@ -73,7 +78,7 @@ def api_drinks(ingredients):
 def drinks(ingredients):
     response = None
     url = URL_IG.replace('KEY', current_app.config['API_KEY']) + ",".join(ingredients)
-    wb = ExternalApi.WebResource()
+    wb = extsync.WebResource()
     try:
         response = wb.get_url(url)
     except Exception as e:
@@ -101,9 +106,3 @@ def drinks(ingredients):
         current_app.logger.info(f"Number of Avail: {len(avail_drinks)}")
 
     return render_template('home/drinks.html', drinks=avail_drinks)
-
-
-
-def get_drinks_by_ingredient(ingredients):
-    data = dict()
-    return
