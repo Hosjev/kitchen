@@ -174,6 +174,7 @@ INSERT INTO ingredients (name) VALUES
   ('Hot Chocolate'),
   ('Hot Sauce'),
   ('Jello'),
+  ('Lemon'),
   ('Lemon Juice'),
   ('Lemonade'),
   ('Lime Juice'),
