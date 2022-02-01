@@ -7,13 +7,17 @@
 {% endblock %}
 
 {% block content %}
-    <section class="post container container-fluid">
 
-      <div class="section-center">
+  <div class="post container-fluid">
+
+      <!-- Begin body -->
+      <div class="d-flex body mx-4">
+
+        <div class="section-center">
             {% for item in drinks %}
               <article class="cocktail">
-		<img src="{{ item['strDrinkThumb'] }}" alt="{{ item['strDrink'] }}" />
-                <h4>{{ item['strDrink'] }}</h4>
+		<img class="mx-auto" src="{{ item['strDrinkThumb'] }}" alt="{{ item['strDrink'] }}" />
+                <h4 class="text-center">{{ item['strDrink'] }}</h4>
 		<p class="ingred">Ingredients:</p>
 		<ul>
 		  {% for key in item %}
@@ -26,7 +30,10 @@
 		<p>{{ item['strInstructions'] }}</p>
               </article>
 	    {% endfor %}
+        </div>
+
       </div>
 
-    </section>
+    </div>
+
 {% endblock %}

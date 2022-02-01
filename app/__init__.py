@@ -13,6 +13,10 @@ def create_app(test_config=None):
     reference the application as such:
         gunicorn <options> "app:create_app()"
 
+    To do so with Beanstalk, add the following with 
+    quotes escaped in a Procfile at app base:
+        gunicorn <options> \"app:create_app()\"
+
     Keyword argument(s):
     test_config -- the environment (default None)
     """

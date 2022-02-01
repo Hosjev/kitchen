@@ -1,21 +1,21 @@
 html { font-family: sans-serif; }
-body { margin: auto !important; background: white; }
+body { background: white; }
 h1 { font-family: serif; color: #377ba8; margin: 1rem 0; }
 a { color: #377ba8; }
 hr { border: none; border-top: 1px solid lightgray; }
-nav { background: lightgray; display: flex; align-items: center; padding: 0 0.5rem; }
+nav { background: lightgray; align-items: center; padding: 0 0.5rem; }
 nav h2 { letter-spacing: 12px; margin: auto; }
 nav h1 a { text-decoration: none; padding: 0.25rem 0.5rem; }
-nav ul  { display: flex; list-style: none; margin: 0; padding: 0; }
+nav ul  { list-style: none; margin: 0; padding: 0; }
 nav ul li a, nav ul li span, header .action { display: block; padding: 0.5rem; }
 .col-heads { font-size: 1.2rem; color: chocolate; }
-.content { padding: 0 1rem 1rem; padding-top: 70px; }
-.content > header { border-bottom: 1px solid lightgray; display: flex; align-items: center; }
-.content > header h1 { flex: auto; margin: 1rem 0 0.25rem 0; }
+.content { padding: 1rem 1rem; padding-top: 70px; }
+.content > header { border-bottom: 1px solid lightgray; align-items: center; }
+.content > header h1 { margin: 1rem 0 0.25rem 0; }
 .content > header p { font-size: small; margin-top: .1rem; margin-bottom: .1rem; }
 .content > header h4 { letter-spacing: 2px; }
 .flash { margin: 1em 0; padding: 1em; background: #cae6f6; border: 1px solid #377ba8; }
-.post > header { display: flex; align-items: flex-end; font-size: 0.85em; }
+.post > header { align-items: flex-end; font-size: 0.85em; }
 .post > header > div:first-of-type { flex: auto; }
 .post > header h1 { font-size: 1.5em; margin-bottom: 0; }
 .post .about { color: slategray; font-style: italic; }
@@ -45,8 +45,8 @@ input[type=submit] { align-self: start; min-width: 10em; }
 @media screen and (min-width: 576px) {
   .section-center {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    column-gap: 4rem;
+    grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+    column-gap: 2rem;
   }
 }
 @media screen and (min-width: 992px) {

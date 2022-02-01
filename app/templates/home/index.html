@@ -1,68 +1,69 @@
 {% extends 'base.html' %}
 
 {% block header %}
-  <div class="text-center container">
+  <div class="text-center container-fluid">
     <p>(got rando stuff in the kitchen?)</p>
     <h4 class="mx-2 my-2">{% block title %}Cobble a cocktail{% endblock %}</h4>
   </div>
 {% endblock %}
 
 {% block content %}
-    <section class="post container container-fluid">
+    <div class="post container-fluid">
 
-      <! -- Begin body -->
-      <div class="body">
+      <!-- Begin body -->
+      <div class="d-flex body mx-4">
         <form method="post">
         
         <!-- row 1 -->
-        <div class="row">
-          <div class="col-lg-6">
-            <div class="my-2 col-heads">
-              Boozy
-	    </div>
-	      <!-- repped by dropdown -->
-              <div class="form-group">
-		  <label for="formBooze">--choose main liquor--</label>
-                  <select name="booze" class="form-control" id="formBooze">
-	            {% for item in booze %}
-                    <option value="{{ item['name'] }}">{{ item['name'] }}</option>
-	            {% endfor %}
-                  </select>
-              </div>
-	  </div>
+	    <div class="row">
+              <div class="col-md-6">
+                <div class="my-2 col-heads">
+                  Boozy
+	        </div>
+	        <!-- repped by dropdown -->
+                <div class="form-group">
+		    <label for="formBooze">--choose main liquor--</label>
+                    <select name="booze" class="form-control" id="formBooze">
+	              {% for item in booze %}
+                      <option value="{{ item['name'] }}">{{ item['name'] }}</option>
+	              {% endfor %}
+                    </select>
+                </div>
+	      </div> <!-- col1 -->
 
-          <div class="col-lg-6">
-            <div class="my-2 col-heads">
-              Non-boozy
-	    </div>
-	        {% for item in boozeless %}
-		  <div class="form-check">
-                      <input type="radio" class="form-check-input" name="boozeless" value="{{ item['name'] }}">
-                      <label class="form-check-label" for="{{ item['id'] }}">{{ item['name'] }}</label>
-                  </div>
-	        {% endfor %}
-	  </div>
-	</div>
+              <div class="col-md-6">
+                <div class="my-2 col-heads">
+                  Non-boozy
+	        </div>
+	          {% for item in boozeless %}
+		    <div class="form-check">
+                        <input type="radio" class="form-check-input" name="boozeless" value="{{ item['name'] }}">
+                        <label class="form-check-label" for="{{ item['id'] }}">{{ item['name'] }}</label>
+                    </div>
+	          {% endfor %}
+	      </div> <!-- col2 -->
+	    </div> <!-- inner row -->
 
-        <hr>
-        <!-- row 2 -->
-	<div class="row">
-	  <div class="col">
-	        {% for item in ingreds %}
-		  <div class="form-check form-check-inline">
-		      <input type="checkbox" class="form-check-input" name="ingred{{ item['id'] }}" value="{{ item['name'] }}">
-                      <label class="form-check-label" for="{{ item['id'] }}">{{ item['name'] }}</label>
-                  </div>
-	        {% endfor %}
+            <hr>
+            <!-- row 2 -->
+	    <div class="row">
+	      <div class="col">
+	          {% for item in ingreds %}
+		    <div class="form-check form-check-inline">
+		        <input type="checkbox" class="form-check-input" name="ingred{{ item['id'] }}" value="{{ item['name'] }}">
+                        <label class="form-check-label" for="{{ item['id'] }}">{{ item['name'] }}</label>
+                    </div>
+	          {% endfor %}
+	      </div>
 	    </div>
-	  <div class="row">
-	      <input type="submit" class="btn btn-primary" value="Hit Me">
-	  </div>
-	</div>
+	    <div class="row">
+	        <div class="col text-center">
+	          <input type="submit" class="btn btn-primary" value="Hit Me">
+	        </div>
+	    </div>
 
         </form>
-      </div>
-      <!-- end body -->
+      </div> <!-- end body -->
 
-    </section>
+    </div>
 {% endblock %}
