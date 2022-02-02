@@ -203,5 +203,4 @@ INSERT INTO ingredients (name) VALUES
   ('Tea'),
   ('Tomato Juice'),
   ('Vanilla Ice-Cream'),
-  ('Vinegar'),
-  ('lemon');
+  ('Vinegar');

@@ -1,5 +1,5 @@
 html { font-family: sans-serif; }
-body { background: white; }
+body { margin: auto !important; background: white; }
 h1 { font-family: serif; color: #377ba8; margin: 1rem 0; }
 a { color: #377ba8; }
 hr { border: none; border-top: 1px solid lightgray; }
@@ -38,19 +38,20 @@ input[type=submit] { align-self: start; min-width: 10em; }
 .section-center {
   padding-top: 5px;
   width: 85vw;
-  margin: 0 auto;
-  max-width: 1170px;
+  margin: auto;
+  max-width: 1200px;
 }
-/* If screen size is greater than 576, display grid */
+/* If screen size is greater than 576, display grid (drinks) */
 @media screen and (min-width: 576px) {
   .section-center {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
     column-gap: 2rem;
   }
 }
-@media screen and (min-width: 992px) {
-  .section-center {
+/* Set max width on all pages */
+@media screen and (min-width: 576px) {
+  body {
     width: 95vw;
   }
 }
