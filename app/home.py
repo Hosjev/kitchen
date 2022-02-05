@@ -1,16 +1,18 @@
+import asyncio
+
 from flask import (
     Blueprint, current_app, flash, redirect, render_template, request, url_for
 )
-
 from app.db import get_db
-from .cocktails import extsync
+from .cocktails import webresource
 
 bp = Blueprint('home', __name__)
 
-# Global URLs
-# by ingredient
+
+# Global
+# URL by ingredient
 URL_IG = "https://www.thecocktaildb.com/api/json/v2/KEY/filter.php?i="
-# by ID
+# URL by ID
 URL_ID = "https://www.thecocktaildb.com/api/json/v2/KEY/lookup.php?i="
 
 
@@ -47,7 +49,7 @@ def index():
                 ingredients.append(v)
         error = None
 
-        # if alcohol and non_alcohol:
+        # TODO: if alcohol and non_alcohol:
             # flash('Please be boozy ... or eazy-classy.')
             # return redirect(url_for('index'))
         # to_taste = alcohol if alcohol else non_alcohol
@@ -76,9 +78,10 @@ def api_drinks(ingredients):
 
 @bp.route('/drinks')
 def drinks(ingredients):
+    """Build id list from GET. Build page from GET details."""
     response = None
     url = URL_IG.replace('KEY', current_app.config['API_KEY']) + ",".join(ingredients)
-    wb = extsync.WebResource()
+    wb = webresource.HTTPSync()
     try:
         response = wb.get_url(url)
     except Exception as e:
@@ -93,16 +96,22 @@ def drinks(ingredients):
         return redirect(url_for('index'))
     else:
         avail_drinks = list()
-        array_ids = [ item['idDrink'] for item in response.json()['drinks']][:8]
+        array_ids = [ item['idDrink'] for item in response.json()['drinks']][:20]
+        # Asynchronous http call(s) using aiohttp
         url_id = URL_ID.replace('KEY', current_app.config['API_KEY'])
-        for d_id in array_ids:
-            try:
-                url = url_id + d_id
-                response = wb.get_url(url)
-            except Exception as e:
-                current_app.logger.error(e)
-            finally:
-                avail_drinks += response.json()['drinks']
+        urls = [url_id + i for i in array_ids]
+        try:
+            results = []
+            wb = webresource.HTTPAsync()
+            asyncio.run(wb.bulk_get(urls, results))
+        except Exception as e:
+            current_app.logger.error(e)
+        finally:
+            # Parse drinks
+            for d in results:
+                if isinstance(d, dict) and d['drinks']:
+                    avail_drinks += d['drinks']
+                else: current_app.logger.error(f"Error for request from external API: {d}")
         current_app.logger.info(f"Number of Avail: {len(avail_drinks)}")
 
     return render_template('home/drinks.html', drinks=avail_drinks)

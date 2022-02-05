@@ -1,6 +1,8 @@
 import os
 
 from flask import Flask
+from flask_limiter import Limiter
+from flask_limiter.util import get_remote_address
 
 
 
@@ -39,6 +41,13 @@ def create_app(test_config=None):
         os.makedirs(app.instance_path)
     except OSError:
         pass
+
+    # Rate Limiting defaults
+    limiter = Limiter(
+        key_func=get_remote_address,
+        default_limits=["300/day", "100/hour", "30/minute"]
+    )
+    limiter.init_app(app)
 
     # Initialize command for DB population
     from . import db
