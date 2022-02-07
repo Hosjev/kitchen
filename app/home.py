@@ -79,21 +79,19 @@ def api_drinks(ingredients):
 @bp.route('/drinks')
 def drinks(ingredients):
     """Build id list from GET. Build page from GET details."""
+    # TODO: defer this activity to a 'in progress' page
     response = None
     url = URL_IG.replace('KEY', current_app.config['API_KEY']) + ",".join(ingredients)
     wb = webresource.HTTPSync()
     try:
         response = wb.get_url(url)
     except Exception as e:
-        current_app.logger.error(e)
-        flash(e)
-        return redirect(url_for('index'))
+        return register_response(e)
 
     current_app.logger.info(f"Url: {url}:{response.status_code}")
 
     if response.json()['drinks'] == 'None Found':
-        flash(f"No drinks found based on ingredients: {', '.join(ingredients)}")
-        return redirect(url_for('index'))
+        return register_response(f"No drinks found based on ingredients: {', '.join(ingredients)}")
     else:
         avail_drinks = list()
         array_ids = [ item['idDrink'] for item in response.json()['drinks']][:20]
@@ -105,7 +103,7 @@ def drinks(ingredients):
             wb = webresource.HTTPAsync()
             asyncio.run(wb.bulk_get(urls, results))
         except Exception as e:
-            current_app.logger.error(e)
+            return register_response(e)
         finally:
             # Parse drinks
             for d in results:
@@ -115,3 +113,9 @@ def drinks(ingredients):
         current_app.logger.info(f"Number of Avail: {len(avail_drinks)}")
 
     return render_template('home/drinks.html', drinks=avail_drinks)
+
+
+def register_response(e):
+    current_app.logger.error(e)
+    flash(e)
+    return redirect(url_for('index'))
