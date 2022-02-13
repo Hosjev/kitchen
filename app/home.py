@@ -19,12 +19,14 @@ URL_ID = "https://www.thecocktaildb.com/api/json/v2/KEY/lookup.php?i="
 
 @bp.route('/', methods=('GET', 'POST'))
 def index():
-    """This main page view retrieves 3 dicts from the instance sqlite
-    database then draws them onto the page. The selection
-    options require only an alcohol type to be chosen. Future
-    releases will take a strict alcohol or non-alcohol type. 
+    """This main page view retrieves 3 dicts from the sqlite instance.
+    The selection options require only an alcohol type to be chosen.
+    Future releases will take a strict alcohol or non-alcohol type. 
     Ingredients are optional.
     """
+    if request.method == 'GET': log_client(request)
+
+    # Database fetch
     db = get_db()
     booze = db.execute(
         'SELECT b.id, b.name'
@@ -70,16 +72,18 @@ def index():
             ingreds=ingreds)
 
 
-@bp.route('/api/v1')
+@bp.route('/api/v1/')
 def api_drinks(ingredients):
     # Stub for API (sanitize results)
     return
 
 
-@bp.route('/drinks')
+@bp.route('/drinks/')
 def drinks(ingredients):
-    """Build id list from GET. Build page from GET details."""
-    # TODO: defer this activity to a 'in progress' page
+    """Build id list from external api call. Build page from call details."""
+    # TODO:
+    #   1. defer this activity to an 'in progress' page
+    #   2. store final ID results in local cache (future features will req Sql)
     response = None
     url = URL_IG.replace('KEY', current_app.config['API_KEY']) + ",".join(ingredients)
     wb = webresource.HTTPSync()
@@ -116,6 +120,15 @@ def drinks(ingredients):
 
 
 def register_response(e):
+    """Function to register messages with flash and redirect to main."""
     current_app.logger.error(e)
     flash(e)
     return redirect(url_for('index'))
+
+
+def log_client(r):
+    if not r.environ.get('HTTP_X_FORWARDED_FOR'):
+        req_ip = r.environ['REMOTE_ADDR']
+    else:
+        req_ip = r.environ['HTTP_X_FORWARDED_FOR']
+    current_app.logger.info(f"connection request from client: {req_ip}")

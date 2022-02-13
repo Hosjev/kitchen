@@ -53,14 +53,14 @@ def create_app(test_config=None):
     from . import db
     db.init_app(app)
 
-    # Register main page and add url to app object
+    # Register main page and add endpoint to app object
     from . import home
     app.register_blueprint(home.bp)
     app.add_url_rule('/', endpoint='index')
 
     # Add blueprint / route for API
     #   and add limiter
-    # @app.route('/api/v1/drinks')
+    # @app.route('/api/v1/drinks/')
     # @limiter.limit("60 per hour")
 
     return app
