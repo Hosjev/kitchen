@@ -72,9 +72,48 @@ def index():
             ingreds=ingreds)
 
 
-@bp.route('/api/v1/')
+@bp.route('/v1/')
 def api_drinks(ingredients):
-    # Stub for API (sanitize results)
+    """
+    Stub our API (pre json response -- sanitize results)
+      (swagger-ish)
+    TODO: start lovingly embracing YAML; turn this endpoint into its own blueprint
+    {
+        "info": {
+            "version": "1.0",
+            "title": "Drinks Recipe(s) Endpoint"
+        },
+        "basePath": "/v1",
+        "schemes": ["http", "https"],
+        "consumes": [ "application/json" ],
+        "produces": [ "application/json" ],
+        "paths": {
+            "/v1/drinks": {
+                "get": {
+                    "summary": "Get recipes based on ingredients",
+                    "parameters": [
+                        {
+                            "name": "offset",
+                            "type": "integer"
+                        },
+                        {
+                            "name": "limit",
+                            "type": "integer"
+                        }
+                    ],
+                    "responses": {
+                        "200": {
+                            "description": "JSON object"
+                        },
+                        "204": {
+                            "description": "JSON object (none found based on parameters)"
+                        }
+                    }
+                }
+            }
+        }
+    }
+    """
     return
 
 
@@ -83,7 +122,8 @@ def drinks(ingredients):
     """Build id list from external api call. Build page from call details."""
     # TODO:
     #   1. defer this activity to an 'in progress' page
-    #   2. store final ID results in local cache (future features will req Sql)
+    #   2. store final ID results in local cache (hit/miss)
+    #   3. future features will req Sql)
     response = None
     url = URL_IG.replace('KEY', current_app.config['API_KEY']) + ",".join(ingredients)
     wb = webresource.HTTPSync()
