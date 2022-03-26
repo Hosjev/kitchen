@@ -47,17 +47,19 @@
             <hr>
 
             <!-- rows 'other' section  -->
-	      {% for category, cat_list in cats.items() %}
-	        <div class="category-input">
-		  <div class="col-heads">
-			  {{ category[1] }}
+	      {% for line in ingreds %}
+	        <div class="category">
+		  <div class="my-2 col-heads">
+			  {{ line['category'] }}
 		  </div>
-		    {% for item in cat_list %}
+		  <div class="collections">
+		    {% for item in line['collection'].split(';') %}
 		      <div class="form-check form-check-inline">
-		        <input type="checkbox" class="form-check-input" name="ingred{{ item['id'] }}" value="{{ item['name'] }}">
-                        <label class="form-check-label" for="{{ item['id'] }}">{{ item['name'] }}</label>
+		        <input type="checkbox" class="form-check-input" name="ingred{{ item.split(',')[0] }}" value="{{ item.split(',')[1] }}">
+                        <label class="form-check-label" for="{{ item.split(',')[0] }}">{{ item.split(',')[1] }}</label>
                       </div>
 	            {% endfor %}
+		  </div>
 		</div>
 	      {% endfor %}
 	    <!-- end other rows -->
