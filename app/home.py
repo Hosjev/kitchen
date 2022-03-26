@@ -37,18 +37,25 @@ def index():
         ' FROM boozeless b '
     ).fetchall()
     ingreds = db.execute(
-        'SELECT i.id, i.name'
-        ' FROM ingredients i '
+        'SELECT i.id, i.name, drink_other_cats.name as c_name'
+        ' FROM drink_other i '
+        ' INNER JOIN drink_other_cats ON drink_other_cats.id = i.cat_id'
     ).fetchall()
+    _cats = db.execute(
+        'SELECT name, priority'
+        ' FROM drink_other_cats '
+    ).fetchall()
+
+    # Organize OTHER ingredients
+    cats = {}
+    for category in _cats:
+        cats[(category['priority'], category['name'])] = [i for i in ingreds if i['c_name'] == category['name']]
 
     # Form request
     if request.method == 'POST':
         alcohol = request.form['booze']
         #non_alcohol = request.form['boozeless']
-        ingredients = list()
-        for k,v in request.form.items():
-            if k.startswith("ingred"):
-                ingredients.append(v)
+        ingredients = [v for k,v in request.form.items() if k.startswith('ingred')]
         error = None
 
         # TODO: if alcohol and non_alcohol:
@@ -69,7 +76,8 @@ def index():
     return render_template('home/index.html',
             booze=booze,
             boozeless=boozeless,
-            ingreds=ingreds)
+            ingreds=ingreds,
+            cats=cats)
 
 
 @bp.route('/v1/')

@@ -11,7 +11,7 @@
     <div class="post container-fluid">
 
       <!-- Begin body -->
-      <div class="d-flex body mx-3">
+      <div class="body mx-3">
         <form method="post">
         
         <!-- row 1 -->
@@ -22,7 +22,7 @@
 	        </div>
 	        <!-- repped by dropdown -->
                 <div class="form-group">
-		    <label for="formBooze">--choose main liquor--</label>
+		    <label for="formBooze">--choose main liquor-- <small class="db-link">*required</small></label>
                     <select name="booze" class="form-control" id="formBooze">
 	              {% for item in booze %}
                       <option value="{{ item['name'] }}">{{ item['name'] }}</option>
@@ -45,25 +45,32 @@
 	    </div> <!-- inner row -->
 
             <hr>
-            <!-- row 2 -->
-	    <div class="row">
-	      <div class="col">
-	          {% for item in ingreds %}
-		    <div class="form-check form-check-inline">
+
+            <!-- rows 'other' section  -->
+	      {% for category, cat_list in cats.items() %}
+	        <div class="category-input">
+		  <div class="col-heads">
+			  {{ category[1] }}
+		  </div>
+		    {% for item in cat_list %}
+		      <div class="form-check form-check-inline">
 		        <input type="checkbox" class="form-check-input" name="ingred{{ item['id'] }}" value="{{ item['name'] }}">
                         <label class="form-check-label" for="{{ item['id'] }}">{{ item['name'] }}</label>
-                    </div>
-	          {% endfor %}
-	      </div>
-	    </div>
-	    <div class="row">
+                      </div>
+	            {% endfor %}
+		</div>
+	      {% endfor %}
+	    <!-- end other rows -->
+
+            <!-- row for button -->
+	    <div class="row mx-3">
 	        <div class="col text-center">
 	          <input type="submit" class="btn btn-primary" value="Hit Me">
 	        </div>
 	    </div>
 
         </form>
-      </div> <!-- end body -->
+      </div> <!-- end d-flex and body -->
 
-    </div>
+    </div> <!-- end post and container-fluid -->
 {% endblock %}
