@@ -1,4 +1,4 @@
-import sqlite3
+import psycopg2
 
 import click
 from flask import current_app, g
@@ -7,9 +7,14 @@ from flask.cli import with_appcontext
 
 def init_db():
     db = get_db()
+    cursor = db.cursor()
 
     with current_app.open_resource('schema.sql') as f:
-        db.executescript(f.read().decode('utf8'))
+        cursor.execute(f.read())
+
+    db.commit()
+    cursor.close()
+    db.close()
 
 
 @click.command('init-db')
@@ -22,12 +27,16 @@ def init_db_command():
 
 def get_db():
     """Store database connection object in 'g' if not present."""
+    db_args = {
+            'host': current_app.config['HOST'],
+            'port': current_app.config['PORT'],
+            'database': current_app.config['DATABASE'],
+            'user': current_app.config['USER'],
+            'password': current_app.config['PSWD'],
+            'sslmode': current_app.config['SSLMODE']
+            }
     if 'db' not in g:
-        g.db = sqlite3.connect(
-            current_app.config['DATABASE'],
-            detect_types=sqlite3.PARSE_DECLTYPES
-        )
-        g.db.row_factory = sqlite3.Row
+        g.db = psycopg2.connect(**db_args)
 
     return g.db
 

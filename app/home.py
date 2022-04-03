@@ -28,21 +28,30 @@ def index():
 
     # Database fetch
     db = get_db()
-    booze = db.execute(
-        'SELECT b.id, b.name'
-        ' FROM booze b '
-    ).fetchall()
-    boozeless = db.execute(
-        'SELECT b.id, b.name'
-        ' FROM boozeless b '
-    ).fetchall()
-    ingreds = db.execute(
-        'SELECT doc.name as category, group_concat(do.id||","||do.name,";") collection'
-        ' FROM drink_other do'
-        ' INNER JOIN drink_other_cats doc ON doc.id = do.cat_id'
-        ' GROUP BY category'
-        ' ORDER BY doc.priority'
-    ).fetchall()
+    cur = db.cursor()
+    cur.execute(
+        "SELECT b.id, b.name"
+        " FROM booze b "
+    )
+    booze = cur.fetchall()
+    cur.execute(
+        "SELECT b.id, b.name"
+        " FROM boozeless b "
+    )
+    boozeless = cur.fetchall()
+    cur.execute(
+        "SELECT drink_other_cats.name as category,"
+        " ARRAY_AGG(drink_other.id||','||drink_other.name) collection"
+        " FROM drink_other"
+        " INNER JOIN drink_other_cats ON drink_other_cats.id = drink_other.cat_id"
+        " GROUP BY category, priority"
+        " ORDER BY priority "
+    )
+    _ingreds = cur.fetchall()
+    cur.close()
+
+    ingreds = {}
+    for i in _ingreds: ingreds[i[0]] = sorted(i[1], key=lambda x: x.split(',')[1])
 
     # Form request
     if request.method == 'POST':
@@ -64,7 +73,8 @@ def index():
         if error is not None:
             flash(error)
         else:
-            return drinks(all_ingredients)
+            # return drinks(all_ingredients)
+            return get_drinks(db, all_ingredients)
 
     return render_template('home/index.html',
             booze=booze,
@@ -118,6 +128,28 @@ def api_drinks(ingredients):
 
 
 @bp.route('/drinks/')
+def get_drinks(connection, all_ingredients):
+    # Form query
+    cur = connection.cursor()
+    cur.execute(
+            "SELECT drink_id, name, type, container, image, instructions, ingredients"
+            " FROM be_drinks"
+            " WHERE (ingredients)::jsonb ? ALL(ARRAY[%s])",
+            (all_ingredients,)
+    )
+    drinks = cur.fetchall()
+    cur.close()
+    connection.close()
+
+    # Process response
+    if not bool(drinks):
+        return register_response(f"No drinks found based on ingredients: {', '.join(all_ingredients)}")
+    else:
+        current_app.logger.info(f"Number of Avail: {len(drinks)}")
+
+    return render_template('home/drinks.html', drinks=drinks)
+
+
 def drinks(ingredients):
     """Build id list from external api call. Build page from call details."""
     # TODO:

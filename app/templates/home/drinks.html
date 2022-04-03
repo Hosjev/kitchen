@@ -16,18 +16,15 @@
         <div class="section-center">
             {% for item in drinks %}
               <article class="cocktail">
-		<img class="mx-auto" src="{{ item['strDrinkThumb'] }}" alt="{{ item['strDrink'] }}" />
-                <h4 class="text-center">{{ item['strDrink'] }}</h4>
+		<img class="mx-auto" src="{{ url_for('static', filename='images/' + item[4]) }}" alt="{{ item[1] }}" />
+                <h4 class="text-center">{{ item[1] }}</h4>
 		<p class="ingred">Ingredients:</p>
 		<ul>
-		  {% for key in item %}
-		    {% if key.startswith('strIngredient') and item[key] %}
-		    <!-- we are ingredient and we have value -->
-		    <li>{{ item[key] }}: <span style="color: #f80f0e">{{ item[key.replace('Ingredient', 'Measure')] }}</span></li>
-		    {% endif %}
+		  {% for key,value in item[6].items() %}
+		    <li>{{ key }}: <span style="color: #f80f0e">{{ value }}</span></li>
 		  {% endfor %}
 		</ul>
-		<p>{{ item['strInstructions'] }}</p>
+		<p>{{ item[5] }}</p>
               </article>
 	    {% endfor %}
         </div>

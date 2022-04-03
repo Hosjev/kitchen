@@ -35,7 +35,7 @@ nav ul li a, nav ul li span, header .action { display: block; padding: 0.5rem; }
 .db-link { color: #e64c4c; margin: 1.5em; }
 .form-control-sm { min-height: calc(5.5em + 10.5rem + 2px) !important; min-width: calc(1.5em + 8rem + 2px) !important; }
 .category .form-check-input { border-radius: .3em !important; }
-.category .collections { margin-left: .5rem; font-size: .95rem; color: #063060; }
+.category .collections { margin-left: .5rem; font-size: .95rem; color: #253950; }
 input.danger { color: #cc2f2e; }
 input[type=submit] { align-self: start; min-width: 10em; }
 .section-center {

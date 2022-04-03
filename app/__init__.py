@@ -25,8 +25,12 @@ def create_app(test_config=None):
     app = Flask(__name__, instance_relative_config=True)
     app.config.from_mapping(
         API_KEY=os.environ.get('API_KEY'),
-        SECRET_KEY=os.environ.get('SECRET_KEY'),
-        DATABASE=os.path.join(app.instance_path, 'flask.sqlite'),
+        HOST=os.environ.get('DATABASE_URL'),
+        PORT=os.environ.get('DB_PORT'),
+        DATABASE=os.environ.get('DATABASE'),
+        USER=os.environ.get('PG_USER'),
+        PSWD=os.environ.get('PG_PSWD'),
+        SSLMODE='require'
     )
 
     # Load configs from classes within config.py if exists,

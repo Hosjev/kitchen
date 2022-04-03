@@ -25,7 +25,7 @@
 		    <label for="formBooze">--choose main liquor-- <small class="db-link">*required</small></label>
                     <select name="booze" class="form-control" id="formBooze">
 	              {% for item in booze %}
-                      <option value="{{ item['name'] }}">{{ item['name'] }}</option>
+                      <option value="{{ item[1] }}">{{ item[1] }}</option>
 	              {% endfor %}
                     </select>
                 </div>
@@ -37,8 +37,8 @@
 	        </div>
 	          {% for item in boozeless %}
 		    <div class="form-check">
-                        <input type="radio" class="form-check-input" name="boozeless" value="{{ item['name'] }}">
-                        <label class="form-check-label" for="{{ item['id'] }}">{{ item['name'] }}</label>
+                        <input type="radio" class="form-check-input" name="boozeless" value="{{ item[1] }}">
+                        <label class="form-check-label" for="{{ item[0] }}">{{ item[1] }}</label>
                     </div>
 	          {% endfor %}
 	      </div> <!-- col2 -->
@@ -47,16 +47,19 @@
             <hr>
 
             <!-- rows 'other' section  -->
-	      {% for line in ingreds %}
+	    <!-- [('cat', ['1,ingred1', ...]), ...]-->
+	      {% for category, line in ingreds.items() %}
 	        <div class="category">
 		  <div class="my-2 col-heads">
-			  {{ line['category'] }}
+			  {{ category }}
 		  </div>
 		  <div class="collections">
-		    {% for item in line['collection'].split(';') %}
+		    {% for item in line %}
+		      {% set item_id = item.split(',')[0] %}
+		      {% set item_name = item.split(',')[1] %}
 		      <div class="form-check form-check-inline">
-		        <input type="checkbox" class="form-check-input" name="ingred{{ item.split(',')[0] }}" value="{{ item.split(',')[1] }}">
-                        <label class="form-check-label" for="{{ item.split(',')[0] }}">{{ item.split(',')[1] }}</label>
+		        <input type="checkbox" class="form-check-input" name="ingred{{ item_id }}" value="{{ item_name }}">
+                        <label class="form-check-label" for="{{ item_id }}">{{ item_name }}</label>
                       </div>
 	            {% endfor %}
 		  </div>
