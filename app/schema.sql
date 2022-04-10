@@ -42,8 +42,6 @@ CREATE TABLE be_drinks(
   ingredients JSON NOT NULL,
   created TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP);
 
-GRANT SELECT ON booze, boozeless, drink_other, drink_other_cats, be_drinks TO flask_query;
-
 INSERT INTO booze (name) VALUES
   ('151 Proof Rum'),
   ('Absinthe'),
