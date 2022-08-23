@@ -1,0 +1,35 @@
+{
+    "info": {
+        "version": "1.0",
+        "title": "Drinks Recipe(s) Endpoint"
+    },
+    "basePath": "/v1",
+    "schemes": ["http", "https"],
+    "consumes": [ "application/json" ],
+    "produces": [ "application/json" ],
+    "paths": {
+        "/v1/drinks": {
+            "get": {
+                "summary": "Get recipes based on ingredients",
+                "parameters": [
+                    {
+                        "name": "offset",
+                        "type": "integer"
+                    },
+                    {
+                        "name": "limit",
+                        "type": "integer"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "JSON object"
+                    },
+                    "204": {
+                        "description": "JSON object (none found based on parameters)"
+                    }
+                }
+            }
+        }
+    }
+}

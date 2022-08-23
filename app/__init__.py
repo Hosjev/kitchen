@@ -30,6 +30,7 @@ def create_app(test_config=None):
         DATABASE=os.environ.get('DATABASE'),
         USER=os.environ.get('PG_USER'),
         PSWD=os.environ.get('PG_PSWD'),
+        SECRET_KEY=os.environ.get('SECRET_KEY'),
         SSLMODE='require'
     )
 
@@ -54,7 +55,7 @@ def create_app(test_config=None):
     limiter.init_app(app)
 
     # Initialize command for DB population
-    from . import db
+    from app.lib import db
     db.init_app(app)
 
     # Register main page and add endpoint to app object
@@ -62,9 +63,9 @@ def create_app(test_config=None):
     app.register_blueprint(home.bp)
     app.add_url_rule('/', endpoint='index')
 
-    # Add blueprint / route for API
-    #   and add limiter
-    # @app.route('/api/v1/drinks/')
-    # @limiter.limit("60 per hour")
+    # Register main page and add endpoint to app object
+    from . import drinks
+    app.register_blueprint(drinks.bp)
+    app.add_url_rule('/api/v1/drinks/', endpoint='/api/v1/drinks/')
 
     return app
