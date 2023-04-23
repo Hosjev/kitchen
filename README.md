@@ -42,7 +42,7 @@ All env variables and entrypoints are defined in DO dashboard.
      PG_USER=flaskuser \
      PG_PSWD=flaskpswd \
      REDIS_URL=redis://localhost:6379
-6. <update code>
+6. update code
 7. gunicorn "app:create_app()"
 
 # TODO
