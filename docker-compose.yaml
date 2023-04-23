@@ -1,0 +1,28 @@
+version: "3.7"
+services:
+  postgres:
+    container_name: flaskPGKitch
+    image: postgres:alpine
+    environment:
+      - POSTGRES_USER=flaskuser
+      - POSTGRES_PASSWORD=flaskpswd
+      - POSTGRES_DB=dbkitch
+    ports:
+      - 5432:5432
+    volumes:
+      - ./dump.sql:/docker-entrypoint-initdb.d/app/schema.sql
+  redis:
+    container_name: flaskRDKitch
+    image: redis
+    ports:
+      - 6379:6379
+    volumes:
+      - compdata:/redis
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  compdata:
