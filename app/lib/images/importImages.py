@@ -3,6 +3,19 @@ import sys
 import redis
 from typing import List
 
+def connect():
+    return redis.StrictRedis(
+        host='localhost',
+        port=6379,
+        db=0,
+        password='',
+        socket_timeout=None,
+        connection_pool=None,
+        charset='utf-8',
+        errors='strict',
+        unix_socket_path=None
+    )
+
 def generate_key(fileID: str) -> str:
     return f'cocktail#image#{fileID}'
 
@@ -22,7 +35,7 @@ def runImagePipeline(directory: str) -> None:
     #directory = '/Users/wendiwhitsett/Scratch/kitchImages/'
     files: List = os.listdir(directory)
 
-    r = redis.Redis(db=0)
+    r = connect()
     with r.pipeline() as pipe:
         pipe.multi()
         # muck thru array

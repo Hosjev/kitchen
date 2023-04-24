@@ -12,16 +12,19 @@ class RedisFlask:
         try:
             current_app.logger.info('connecting to Redis')
             if 'redis' not in g:
-                g.redis: redis.Redis = redis.Redis.from_url(
-                  current_app.config['REDIS_URL'] + '/' + str(db)
+                  g.redis: redis.Redis = redis.StrictRedis(
+                      host=current_app.config['REDIS_HOST'],
+                      port=6379,
+                      db=0,
+                      password=current_app.config['REDIS_PSWD'],
+                      socket_timeout=None,
+                      connection_pool=None,
+                      charset='utf-8',
+                      errors='strict',
+                      unix_socket_path=None
                   )
         except RuntimeError:
             current_app.logger.info('attempting to call client outside of Flask')
             raise ClientOutsideFlask('run client inside Flask only')
         return g.redis
 
-
-class RedisParser:
-
-    def imageKey(self):
-        return 'cocktail#image#'

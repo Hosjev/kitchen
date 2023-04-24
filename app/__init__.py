@@ -15,7 +15,7 @@ def create_app(test_config=None):
     reference the application as such:
         gunicorn <options> "app:create_app()"
 
-    To do so with Beanstalk, add the following with 
+    To do so with Beanstalk, add the following with
     quotes escaped in a Procfile at app base:
         gunicorn <options> \"app:create_app()\"
 
@@ -30,8 +30,9 @@ def create_app(test_config=None):
         DATABASE=os.environ.get('DATABASE'),
         USER=os.environ.get('PG_USER'),
         PSWD=os.environ.get('PG_PSWD'),
+        REDIS_URL=os.environ.get('REDIS_URL'),
         SECRET_KEY=os.environ.get('SECRET_KEY'),
-        SSLMODE='require'
+        SSLMODE=os.environ.get('SSLMODE')
     )
 
     # Load configs from classes within config.py if exists,
