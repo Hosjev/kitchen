@@ -16,6 +16,7 @@ class RedisFlask:
                       host=current_app.config['REDIS_HOST'],
                       port=6379,
                       db=0,
+                      username=current_app.config['REDIS_USER'],
                       password=current_app.config['REDIS_PSWD'],
                       socket_timeout=None,
                       connection_pool=None,
