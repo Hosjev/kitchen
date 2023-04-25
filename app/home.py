@@ -97,7 +97,7 @@ def get_local_drinks(redis: redis.Redis, db: object, all_ingredients: list):
     if not bool(drinks):
         return register_response(f"No drinks found based on ingredients: {', '.join(all_ingredients)}")
     else:
-        drinks = parse_images(redis, drinks)
+        #drinks = parse_images(redis, drinks)
         current_app.logger.info(f"Number of Avail: {len(drinks)}")
 
     return render_template('home/drinks.html', drinks=drinks)

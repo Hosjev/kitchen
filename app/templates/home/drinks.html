@@ -16,8 +16,8 @@
         <div class="section-center">
             {% for item in drinks %}
               <article class="cocktail">
-		<!-- <img class="mx-auto" src="{{ url_for('static', filename='images/' + item[4]) }}" alt="{{ item[1] }}" /> -->
-                <img class="mx-auto" src="data:image/jpeg;base64, {{ item[4] }}" alt="{{ item[1] }}" />
+		<img class="mx-auto" src="{{ url_for('static', filename='images/' + item[4]) }}" alt="{{ item[1] }}" />
+		<!-- <img class="mx-auto" src="data:image/jpeg;base64, {{ item[4] }}" alt="{{ item[1] }}" /> -->
                 <h4 class="text-center">{{ item[1] }}</h4>
 		<p class="ingred">Ingredients:</p>
 		<ul>
