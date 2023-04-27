@@ -1,3 +1,5 @@
+import base64
+import io
 import os
 import sys
 import redis
@@ -16,12 +18,17 @@ def connect():
         unix_socket_path=None
     )
 
+
 def generate_key(fileID: str) -> str:
     return f'cocktail#image#{fileID}'
 
 
+def buffer(image):
+    return io.BytesIO(image) 
+
+
 def read_file(file: str) -> bin:
-    return open(file, 'rb').read()
+    return buffer(open(file, 'rb').read())
 
 
 def runImagePipeline(directory: str) -> None:

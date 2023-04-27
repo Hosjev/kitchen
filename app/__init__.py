@@ -34,6 +34,7 @@ def create_app(test_config=None):
         REDIS_PSWD=os.environ.get('REDIS_PSWD'),
         REDIS_USER=os.environ.get('REDIS_USER'),
         SECRET_KEY=os.environ.get('SECRET_KEY'),
+        REDIS_URL=os.environ.get('REDIS_URL'),
         SSLMODE=os.environ.get('SSLMODE')
     )
 

@@ -13,7 +13,7 @@
       <!-- Begin body -->
       <div class="body mx-3">
         <form method="post">
-        
+
         <!-- row 1 -->
 	    <div class="row">
               <div class="col-md-6">
@@ -22,8 +22,9 @@
 	        </div>
 	        <!-- repped by dropdown -->
                 <div class="form-group">
-		    <label for="formBooze">--choose main liquor-- <small class="db-link">*required</small></label>
+		    <label for="formBooze">--choose main liquor-- <small class="db-link"></small></label>
                     <select name="booze" class="form-control" id="formBooze">
+											<option value='None' selected>None</option>
 	              {% for item in booze %}
                       <option value="{{ item[1] }}">{{ item[1] }}</option>
 	              {% endfor %}
@@ -33,7 +34,7 @@
 
               <div class="col-md-6">
                 <div class="my-2 col-heads">
-			Non-boozy <small class="text-muted">(inbound feature...)</small>
+			Mocktail Subs <small class="text-muted"></small>
 	        </div>
 	          {% for item in boozeless %}
 		    <div class="form-check">

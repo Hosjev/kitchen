@@ -7,7 +7,7 @@ from flask import (
 import redis
 from app.lib.db import get_db
 from app.lib.redis.client import RedisFlask
-from app.lib.images import ImageParser
+from app.lib.images import ImageParserAsync
 from app.lib import webresource
 from app.lib import common
 
@@ -72,15 +72,14 @@ def index():
             # return redirect(url_for('index'))
         # to_taste = alcohol if alcohol else non_alcohol
         to_taste = alcohol
-        all_ingredients = [to_taste] + ingredients
+        all_ingredients = ingredients if to_taste == 'None' else [to_taste] + ingredients
 
         if not all_ingredients:
-            error = f'Error: {all_ingredients}'
+            error = 'Error: no ingredients chosen.'
 
         if error is not None:
             flash(error)
         else:
-            # return drinks(all_ingredients)
             return get_local_drinks(redis, db, all_ingredients)
 
     return render_template('home/index.html',
@@ -148,7 +147,7 @@ def parse_images(redis: redis.Redis, drinks: list) -> list:
         drinks (list): an array of tuples
                        [(id, name, type, cont, image,...)]
     """
-    newDrinks = asyncio.run(ImageParser().getAllImages(redis, drinks))
+    newDrinks = asyncio.run(ImageParserAsync().getAllImages(redis, drinks))
     #current_app.logger.warn(newDrinks)
     return newDrinks
 
